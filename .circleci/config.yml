@@ -149,6 +149,7 @@ jobs:
           name: Install dependencies
           command: |
             yum -y install tar
+            yum -y install gzip
       - persist_to_workspace:
           root: .circleci/ansible
           paths:
