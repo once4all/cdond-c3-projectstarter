@@ -1,5 +1,6 @@
 version: 2.1
-
+orbs:
+  aws-s3: circleci/aws-s3@3.1
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -228,10 +229,18 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
         user: root
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get -y update
+            sudo apt -y install curl tar gzip
+            sudo apt-get -y -qq install python3
+            sudo apt-get -qq install awscli
       - run:
           name: Get backend url
           command: |
@@ -242,6 +251,13 @@ jobs:
               --output text)
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+#      - run:
+#          name: Deploy frontend objects
+#          command: |
+#            cd frontend
+#            npm install
+#            npm run build
+#            aws s3 cp ~/project/frontend/dist/ s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
       - aws-s3/sync:
           from: ~/project/frontend/dist/
           to: s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/
