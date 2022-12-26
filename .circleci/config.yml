@@ -15,29 +15,29 @@ commands:
             aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
-    destroy-backend:
-      description: Destroy back-end.
-      parameters:
+  destroy-backend:
+    description: Destroy back-end.
+    parameters:
       # Add parameter here
-      steps:
-        - run:
-            name: Destroy environments
-            when: on_fail
-            command: |
-              aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"
-              aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
-    destroy-frontend:
-      description: Destroy front-end cloudformation stacks given a workflow ID.
-      parameters:
-      # Add parameter here
-      steps:
-        - run:
-            name: Destroy environments
-            when: on_fail
-            command: |
-              aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
-              aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
+  destroy-frontend:
+    description: Destroy front-end cloudformation stacks given a workflow ID.
+    parameters:
+    # Add parameter here
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+            aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
