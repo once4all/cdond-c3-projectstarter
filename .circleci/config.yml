@@ -236,7 +236,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python
+      - image: 3.11.1-node
         user: root
     steps:
       - checkout
