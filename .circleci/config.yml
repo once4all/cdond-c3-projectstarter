@@ -248,9 +248,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt install ansible
-            sudo apt install tar
-            pip install awscli
+            sudo apt install ansible --fix-missing
+            sudo apt install tar --fix-missing
+            pip install awscli --fix-missing
       - run:
           name: Deploy backend
           command: |
