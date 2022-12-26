@@ -236,7 +236,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: 3.11.1-node
+      - image: 3.9.16-node
         user: root
     steps:
       - checkout
