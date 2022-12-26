@@ -250,13 +250,16 @@ jobs:
               --output text)
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
-      - run:
-          name: Deploy frontend objects
-          command: |
-            cd frontend
-            npm install
-            npm run build
-            aws s3 cp ~/project/frontend/dist/ s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
+#      - run:
+#          name: Deploy frontend objects
+#          command: |
+#            cd frontend
+#            npm install
+#            npm run build
+#            aws s3 cp ~/project/frontend/dist/ s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
+      - aws-s3/sync:
+          from: ~/project/frontend/dist/
+          to: s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/
       - destroy-frontend
       - revert-migrations
 
@@ -287,7 +290,7 @@ jobs:
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       - destroy-backend
-      - revert-migrations
+#      - revert-migrations
 
 #  smoke-test:
 #    docker:
