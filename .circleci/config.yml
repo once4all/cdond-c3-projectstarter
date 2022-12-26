@@ -12,7 +12,7 @@ commands:
           when: on_fail
           command: |
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
-            aws terminate-instances --instance-ids ${ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text --query 'Reservations[*].Instances[*].InstanceId'}
+#            aws terminate-instances --instance-ids ${ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text --query 'Reservations[*].Instances[*].InstanceId'}
             aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -302,7 +302,10 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text)
-            if curl -s http://${API_URL}:3030/api/status | grep "ok"
+            echo ${BACKEND_IP}
+            RESULT=${curl -s http://${API_URL}:3030/api/status}
+            echo ${RESULT}
+            if ${RESULT} | grep "ok"
             then
               echo "Backend Smoke Test Success"
               exit 0
@@ -321,6 +324,7 @@ jobs:
               return 1
             fi
       - destroy-environment
+      - revert-migrations
 #
 #  cloudfront-update:
 #    docker:
