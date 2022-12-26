@@ -203,7 +203,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node
         user: root
     steps:
       # Checkout code from git
@@ -223,7 +223,6 @@ jobs:
               --output text)
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
-            cat frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
