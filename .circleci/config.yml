@@ -12,7 +12,6 @@ commands:
           when: on_fail
           command: |
             aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
-            aws terminate-instances --instance-ids $(ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text --query 'Reservations[*].Instances[*].InstanceId')
             aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -25,7 +24,6 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws terminate-instances --instance-ids $(ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text --query 'Reservations[*].Instances[*].InstanceId')
             aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
   destroy-frontend:
