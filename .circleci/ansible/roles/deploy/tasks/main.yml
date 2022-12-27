@@ -9,13 +9,7 @@
   become: true
   user: root
   shell: |
-#    sudo apt-get update
-#    sudo apt-get upgrade
     sudo apt-get -y install npm
-#    cd /home/ubuntu
-#    sudo mkdir npm
-#    sudo chown -R 1000:1000 "/home/ubuntu"
-#    sudo chown -R 1000:1000 "/usr/"
     npm install pm2@latest -g
 
 - name: "Extract backend files"
