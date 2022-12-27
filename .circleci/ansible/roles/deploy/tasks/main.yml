@@ -1,11 +1,23 @@
+- name: "Copy"
+  become: yes
+  copy:
+    src: ~/project/artifact.tar.gz
+    dest: /home/ubuntu/artifact.tar.gz
+
 - name: "Unzip"
   unarchive:
-    src: artifact.tar.gz
+    src: /home/ubuntu/artifact.tar.gz
     dest: /home/ubuntu/
+
+- name: "Install npm"
+  become: true
+  shell: |
+    cd /home/ubuntu
+    npm install
 
 - name: "Start"
   shell: |
-    cd /home/ubuntu/backend/dist
+    cd /home/ubuntu/
     pm2 stop default
     pm2 start npm --name 'udapeople' -- start
     pm2 ls
