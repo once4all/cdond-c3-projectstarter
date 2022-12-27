@@ -4,6 +4,11 @@
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/artifact.tar.gz
 
+- name: "Install dependencies"
+  become: true
+  shell: |
+    sudo npm install pm2 -g
+
 - name: "Extract backend files"
   become: true
   shell: |
