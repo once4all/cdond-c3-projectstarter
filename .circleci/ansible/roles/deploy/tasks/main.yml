@@ -1,6 +1,6 @@
 - name: "Unzip"
   unarchive:
-    src: api.tar.gz
+    src: artifact.tar.gz
     dest: /home/ubuntu/
 
 - name: "Start"
