@@ -160,8 +160,8 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text)
-            echo "\n" >> .circleci/ansible/inventory.txt
-            echo ${BACKEND_IP} >> .circleci/ansible/inventory.txt
+            echo -e "\n" >> .circleci/ansible/inventory.txt
+            echo -e ${BACKEND_IP} >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
