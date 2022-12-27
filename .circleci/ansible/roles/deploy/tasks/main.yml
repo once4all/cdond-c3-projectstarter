@@ -1,20 +1,17 @@
 - name: "Copy"
   become: yes
-  user: root
   copy:
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/artifact.tar.gz
 
 - name: "Install dependencies"
   become: true
-  user: root
   shell: |
     sudo apt-get -y install npm
     npm install pm2@latest -g
 
 - name: "Extract backend files"
   become: true
-  user: root
   shell: |
     cd /home/ubuntu
     tar -vxf artifact.tar.gz
@@ -22,13 +19,11 @@
 
 - name: npm install
   become: true
-  user: root
   shell: |
     cd /home/ubuntu
     npm install
 
 - name: "Start"
-  user: root
   shell: |
     cd /home/ubuntu/
     pm2 stop default
