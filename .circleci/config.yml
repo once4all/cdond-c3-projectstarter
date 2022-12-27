@@ -331,12 +331,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            yum -y install nodejs
-            yum -y install tar 
-            yum -y install gzip
-      - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
