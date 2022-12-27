@@ -11,9 +11,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
-            aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7} --force
-            aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7} --force
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} 
+            aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7} 
+            aws cloudformation delete-stack --stack-name back-prod-${CIRCLE_WORKFLOW_ID:0:7} 
 
   destroy-backend:
     description: Destroy back-end.
@@ -35,7 +35,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} 
             aws cloudformation delete-stack --stack-name front-prod-${CIRCLE_WORKFLOW_ID:0:7}
 
   revert-migrations:
@@ -117,7 +117,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical 
             npm audit --audit-level=critical
 
   scan-backend:
@@ -130,7 +130,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical 
 
   deploy-infrastructure:
     docker:
@@ -359,9 +359,9 @@ jobs:
             echo THIS IS THE OldWorkflowID: "${OldWorkflowID}"
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws s3 rb s3://udapeople-${OldWorkflowID} --force
-              aws cloudformation delete-stack --stack-name front-prod-${OldWorkflowID} --force
-              aws cloudformation delete-stack --stack-name back-prod-${OldWorkflowID} --force
+              aws s3 rb s3://udapeople-${OldWorkflowID} 
+              aws cloudformation delete-stack --stack-name front-prod-${OldWorkflowID} 
+              aws cloudformation delete-stack --stack-name back-prod-${OldWorkflowID} 
             fi
       - destroy-environment
       - revert-migrations
