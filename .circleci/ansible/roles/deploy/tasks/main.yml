@@ -27,6 +27,8 @@
 - name: "Start"
   shell: |
     cd /home/ubuntu/
+    sudo mkdir /home/ubuntu/.pm2
+    sudo chown -R 1000:1000 "/home/ubuntu/.pm2/"
     pm2 stop default
     pm2 start npm --name 'udapeople' -- start
     pm2 ls
