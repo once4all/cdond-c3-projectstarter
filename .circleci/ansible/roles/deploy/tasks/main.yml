@@ -4,10 +4,12 @@
     src: ~/project/artifact.tar.gz
     dest: /home/ubuntu/artifact.tar.gz
 
-- name: "Unzip"
-  unarchive:
-    src: /home/ubuntu/artifact.tar.gz
-    dest: /home/ubuntu/
+- name: "Extract backend files"
+  become: true
+  shell: |
+    cd /home/ubuntu
+    tar -vxf artifact.tar.gz
+    rm artifact.tar.gz
 
 - name: "Install npm"
   become: true
