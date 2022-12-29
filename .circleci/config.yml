@@ -46,12 +46,13 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request GET https://api.memstash.io/values/UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}-DBMigrationStatus)
-            if [ ${SUCCESS} = "1" ];
+            SUCCESS=$(curl --insecure  https://kvdb.io/7dNX8bbdDsi3eqqjinxCKo/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            #Logic for reverting the database state
+            if (( $SUCCESS == 1 ));
             then
               cd ~/project/backend
-              npm i
-              npm run migrations:revert
+              npm install
+              npm run migration:revert
             fi
 
 jobs:
@@ -214,14 +215,7 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/7dNX8bbdDsi3eqqjinxCKo/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            #Logic for reverting the database state
-            if (( $SUCCESS == 1 ));
-            then
-              cd ~/project/backend
-              npm install
-              npm run migration:revert
-            fi
+            curl -d '1' https://kvdb.io/7dNX8bbdDsi3eqqjinxCKo/migration_${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
 
   deploy-frontend:
