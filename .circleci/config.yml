@@ -46,7 +46,13 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            pwd
+            SUCCESS=$(curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request GET https://api.memstash.io/values/UdaPeople-${CIRCLE_WORKFLOW_ID:0:7}-DBMigrationStatus)
+            if [ ${SUCCESS} = "1" ];
+            then
+              cd ~/project/backend
+              npm i
+              npm run migrations:revert
+            fi
 
 jobs:
   build-frontend:
