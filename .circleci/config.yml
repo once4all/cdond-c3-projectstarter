@@ -214,10 +214,13 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            if grep -q "has been executed successfully." $TEMP
+            SUCCESS=$(curl --insecure  https://kvdb.io/7dNX8bbdDsi3eqqjinxCKo/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            #Logic for reverting the database state
+            if (( $SUCCESS == 1 ));
             then
-            # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
-            curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              cd ~/project/backend
+              npm install
+              npm run migration:revert
             fi
       - destroy-environment
 
